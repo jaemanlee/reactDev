@@ -15,7 +15,7 @@ const SwiperPage = () => {
         spaceBetween={30}
         autoplay={{ delay: 3000,
                      disableOnInteraction: false, }}
-        breakpoints={{
+         breakpoints={{
           500:{
             slidesPerView:1            
             },
