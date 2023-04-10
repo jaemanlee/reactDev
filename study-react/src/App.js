@@ -5,6 +5,9 @@ import Header from './components/header/Header'
 import SwiperPage from './components/swiper/SwiperPage'
 import styled from "styled-components";
 import './App.css'
+import  { Kakaologin } from './components/login/KakaoCallback';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 
 const HeaderDiv = styled.div`
 width : 100%;
@@ -19,6 +22,7 @@ const SwiperDiv = styled.div`
   margin-top: 10px;
 `
 
+const window_location = window.location.href.indexOf('code');
 function App() {
 
 useEffect(()=>{
@@ -27,17 +31,30 @@ useEffect(()=>{
   //         console.log(res);
   //       })
   //       .catch(res=>console.log(res));
- 
+  
 } , []);
 
   return (
+
      <>
-      <HeaderDiv>
-          <Header/>
-      </HeaderDiv>
-      <SwiperDiv>
-        <SwiperPage/>
-      </SwiperDiv>
+     {window_location > -1 ? 
+      <BrowserRouter>
+        <Routes>
+          <Route path='/KakaoCallback' Component={Kakaologin}></Route>
+
+        </Routes>
+      </BrowserRouter> 
+    : 
+      <>
+        <HeaderDiv>
+            <Header/>
+        </HeaderDiv>
+        <SwiperDiv>
+          <SwiperPage/>
+        </SwiperDiv>
+      </>
+    }
+      
      </>
   );
 }
