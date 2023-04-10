@@ -6,6 +6,14 @@ import { Autoplay, Pagination } from "swiper";
 
 
 
+const setImgScale = (event,flag)=> {
+  if(flag){
+    event.currentTarget.style.scale=1.2;
+  }else{
+    event.currentTarget.style.scale='';
+  }
+}
+
 
 const SwiperPage = () => {
     return(
@@ -35,7 +43,7 @@ const SwiperPage = () => {
         className="mySwiper"
       >
         <SwiperSlide>
-          <img src={'/img/AB03/AB03_CODE.jpg'} style={{height:'450px'}}></img>
+          <img src={'/img/AB03/AB03_CODE.jpg'} style={{height:'450px'}} title="aaaa" onMouseEnter={(event)=>{setImgScale(event,true)}} onMouseLeave={(event)=>{setImgScale(event,false)}} alt="미미미"></img>
         </SwiperSlide>
         <SwiperSlide>
           <img src={`${process.env.PUBLIC_URL}/img/AB03/AB03_CODE.jpg`} style={{height:'450px'}}></img>
@@ -56,5 +64,7 @@ const SwiperPage = () => {
     </>
     );
 }
+
+
 
 export default SwiperPage;

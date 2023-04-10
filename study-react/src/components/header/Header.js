@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import {Button, Nav} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import {ModalPopup} from '../../components/modal/ModalPopup'
+
 
 const HeaderDiv = styled.div`
     position: relative;
@@ -18,7 +20,6 @@ const HeaderInput = styled.input`
 `
 
 const HeaderButton = styled(Button)`
-    margin-left: 8px;
     position: relative;
     bottom: 2px;
 `
@@ -31,7 +32,17 @@ const HeaderA = styled(Nav.Link)`
     margin-left : ${props=> (props.index) ? '70px' : ''};
 `
 
+
+
 const Header = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    
+
+    const FnClickLogin = (flag) =>{ 
+        flag ? setModalIsOpen(true) :  setModalIsOpen(false);
+    }
+
+
 
     return( 
         <>
@@ -46,13 +57,17 @@ const Header = () => {
                 </Nav>
             </HeaderDiv>
             <HeaderDiv>
-                <HeaderInput type="string" placeholder='아이디'/>
-                <HeaderInput input='true' type='passwd' placeholder='패스워드'/>
-                <HeaderButton>로그인</HeaderButton>
-                <HeaderButton>회원가입</HeaderButton>
+                {/* <HeaderInput type="string" placeholder='아이디'/>
+                <HeaderInput input='true' type='passwd' placeholder='패스워드'/> */}
+                <HeaderButton onClick={()=>FnClickLogin(true)}>로그인</HeaderButton>
+                {/* <HeaderButton>회원가입</HeaderButton> */}
             </HeaderDiv>
+            { modalIsOpen && <ModalPopup close= {()=>FnClickLogin(false)}/> }
         </>
     );
 }
+
+
+
 
 export default Header;
