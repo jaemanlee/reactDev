@@ -1,7 +1,7 @@
 
-import React, {Component, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import Header from './components/header/Header'
+import {Header} from './components/header/Header'
 import SwiperPage from './components/swiper/SwiperPage'
 import styled from "styled-components";
 import './App.css'
@@ -24,8 +24,12 @@ const SwiperDiv = styled.div`
 
 const window_location = window.location.href.indexOf('code');
 function App() {
+  const [spanValue, setSpanValue] = useState(null);
+
+  const [spanStyle, setSpanStyle] = useState('none');
 
 useEffect(()=>{
+  console.log(spanValue);
   // axios.post("/main/temp.do")
   //       .then(res=>{
   //         console.log(res);
@@ -40,14 +44,14 @@ useEffect(()=>{
      {window_location > -1 ? 
       <BrowserRouter>
         <Routes>
-          <Route path='/KakaoCallback' Component={Kakaologin}></Route>
+          <Route path='/KakaoCallback' Component={()=><Kakaologin spanStyle={spanStyle} setSpanValue={setSpanValue} setSpanStyle={setSpanStyle}/>}></Route>
 
         </Routes>
       </BrowserRouter> 
     : 
       <>
         <HeaderDiv>
-            <Header/>
+            <Header />
         </HeaderDiv>
         <SwiperDiv>
           <SwiperPage/>
