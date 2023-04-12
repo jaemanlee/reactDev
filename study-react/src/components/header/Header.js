@@ -21,7 +21,8 @@ const HeaderInput = styled.input`
 
 const HeaderButton = styled(Button)`
     position: relative;
-    bottom: 2px;
+    bottom: 1px;
+    right: 7px;
 `
 const HeaderA = styled(Nav.Link)`
     font-weight: bold !important;
