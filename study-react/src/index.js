@@ -13,7 +13,7 @@ const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ &&
 
 root.render(
     <Provider store={store}>
-        <App />
+         <App />
      </Provider>
   
 );
