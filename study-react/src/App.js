@@ -1,5 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
+import Middle from './components/middle/Middle'
 import axios from 'axios';
 import {Header} from './components/header/Header'
 import SwiperPage from './components/swiper/SwiperPage'
@@ -10,7 +11,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
 const HeaderDiv = styled.div`
-width : 100%;
+width : 1912px;
 display : inline-flex;
 flex-flow: row;
 justify-content: space-between;
@@ -20,6 +21,8 @@ background-color: #000;
 const SwiperDiv = styled.div`
   background: #cbcbcb;
   margin-top: 10px;
+  width: 1903px;
+  margin-left: 9px;
 `
 
 const window_location = window.location.href.indexOf('code');
@@ -56,6 +59,7 @@ useEffect(()=>{
         <SwiperDiv>
           <SwiperPage/>
         </SwiperDiv>
+        <Middle></Middle>
       </>
     }
       

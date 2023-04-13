@@ -84,12 +84,12 @@ const DivImg = styled.img`
 `
 
 const DivImg2 = styled.img`
-cursor : pointer;
-position: relative;
-margin-top : 5px;
-width: 185px;
-height: 43px;
-border-radius: 6px;
+    cursor : pointer;
+    position: relative;
+    margin-top : 5px;
+    width: 185px;
+    height: 43px;
+    border-radius: 6px;
 `
 
 const IoginImage = styled.img`
