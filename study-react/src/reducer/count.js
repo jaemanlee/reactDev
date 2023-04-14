@@ -1,19 +1,20 @@
 
 
 const initalState = {
-    style : 'none',
-    value : '',
-    imgPath : ''
+    type : '',
+    area : [],
+    category : [],
+    cate : [],
+    diff : []
   };
 
 const counter = (state = initalState, action) => {
     switch (action.type) {
-      case 'login':
+      case 'search':
         return {
           ...state,
-          style: action.style,
-          value : action.value,
-          imgPath : action.path
+          area: action.area
+       
         };
   
       default:

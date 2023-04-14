@@ -1,5 +1,7 @@
-import { useRef } from 'react'
-import { useState } from 'react'
+import react , {useEffect, useState, useRef}from 'react'
+import counter from '../../reducer/count'
+import { useDispatch, useSelector } from 'react-redux';
+import {Button} from 'react-bootstrap'
 import styled from 'styled-components'
 
 const ParentDiv = styled.div`
@@ -13,6 +15,19 @@ const ParentDiv = styled.div`
 
 const MainStrong = styled.strong`
     font-size : 25px;
+`
+
+const SearchDiv = styled.div`
+float: right;
+position: relative;
+top: 15px;
+right: 7px;
+`
+
+const SearchInput  = styled.input`
+    margin-right: 5px;
+    position: relative;
+    top: 3px;
 `
 
 const SubString = styled.strong`
@@ -52,123 +67,177 @@ const MiddleSpan = styled.span`
 
 
 
+
+
 const Middle = () => {
-    const [DivStyle, setDivStyle] = useState('');
-    const [CurrentDiv, setCurrentDiv] = useState('');
-    const divRef = useRef([null]);
+    const [OneCurrentDiv, setOneCurrentDiv] = useState('');
+    const [TwoCurrentDiv, setTwoCurrentDiv] = useState('');
+    const [ThreeCurrentDiv, setThreeCurrentDiv] = useState('');
+    const [FourCurrentDiv, setFourCurrentDiv] = useState('');
+    const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
+    const select = useSelector((state) => state.counter);
 
-    const ToggleDivHandler = (e) => {
-        console.log(divRef)
-        // e.target.style.background ? setDivStyle('') : setDivStyle('#fff703');
-        CurrentDiv === e.target ? setCurrentDiv(null) : setCurrentDiv(e.target);
-
-        // e.target.parentElement.parentElement.childNodes.forEach(item =>
-        //     { console.log(item)}
-        // )
+    const FnClickBtn = (e) => {
+        console.log(select);
+        dispatch(counter(counter.initalState,{type:'search',area : [1,2,3]}));
     }
 
-    const ToggleStyleHandler = (target) => {
-        console.log(CurrentDiv);
-        if(CurrentDiv && target === CurrentDiv.id){
-            return {background : '#fff703'} 
-        }else{
-            return {background : ''}
+    const ToggleDivHandler = (...event) => {
+
+        switch(event[1]){
+            case '1' : 
+                       if(event[0].target.style.background) 
+                          setOneCurrentDiv(event[0].target.id);
+                       else if(OneCurrentDiv !== event[0].target)  
+                            setOneCurrentDiv(event[0].target);
+                       break;
+            case '2' : 
+                        if(event[0].target.style.background) 
+                            setTwoCurrentDiv(event[0].target.id);
+                        else if(TwoCurrentDiv !== event[0].target)  
+                             setTwoCurrentDiv(event[0].target);
+                        break;
+            case '3' : 
+                        if(event[0].target.style.background) 
+                            setThreeCurrentDiv(event[0].target.id);
+                        else if(ThreeCurrentDiv !== event[0].target)  
+                             setThreeCurrentDiv(event[0].target);
+                        break;
+            default : 
+                        if(event[0].target.style.background) 
+                            setFourCurrentDiv(event[0].target.id);
+                        else if(FourCurrentDiv !== event[0].target)  
+                            setFourCurrentDiv(event[0].target);
+                        break;
+
         }
     }
+
+    const ToggleStyleHandler = (...param) => {
+        console.log(param);
+        switch(param[1]){
+            case '1' : 
+                        if(OneCurrentDiv === param[0]) return {background:''};
+
+                        let clickOne = Array.from(document.querySelectorAll('.area td div')).filter(item => item.style.background).map(item =>item.id) 
+                        if(clickOne.includes(param[0])) return {background:'#fff703'};
+                        if(OneCurrentDiv && OneCurrentDiv.id === param[0]) return {background : '#fff703'}
+                        break;
+            case '2' : 
+                        if(TwoCurrentDiv === param[0]) return {background:''};
+
+                        let clickTwo = Array.from(document.querySelectorAll('.category td div')).filter(item => item.style.background).map(item =>item.id) 
+                        if(clickTwo.includes(param[0])) return {background:'#fff703'};
+                        if(TwoCurrentDiv && TwoCurrentDiv.id === param[0]) return {background : '#fff703'}
+                        break;
+            case '3' : 
+                        if(ThreeCurrentDiv === param[0]) return {background:''};
+
+                        let clickThree = Array.from(document.querySelectorAll('.cate td div')).filter(item => item.style.background).map(item =>item.id) 
+                        if(clickThree.includes(param[0])) return {background:'#fff703'};
+                        if(ThreeCurrentDiv && ThreeCurrentDiv.id === param[0]) return {background : '#fff703'}
+                        break;
+            default :   
+                        if(FourCurrentDiv === param[0]) return {background:''};
+
+                        let clickFour = Array.from(document.querySelectorAll('.diff td div')).filter(item => item.style.background).map(item =>item.id) 
+                        if(clickFour.includes(param[0])) return {background:'#fff703'};
+                        if(FourCurrentDiv && FourCurrentDiv.id === param[0]) return {background : '#fff703'}
+                        break;
+        }
+        
+        
+        
+    }
+
+    
 
     return (
         <>
             <ParentDiv>
                 <MainStrong>방탈출 테마</MainStrong>
-                <MiddleDiv>
+                <SearchDiv>
+                    <SearchInput placeholder='방탈출명'></SearchInput>
+                    <Button onClick={FnClickBtn}>검색</Button>
+                </SearchDiv>
+                <MiddleDiv className='area'>
                     <div>
                         <SubString>지역</SubString>    
                     </div>
                     <MiddleTable>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <MiddleTdDiv id="ALL" style={{background : divRef.current[0] ? ( divRef.current[0].id === CurrentDiv ? DivStyle :'') : ''}}  onClick={ToggleDivHandler}>전국</MiddleTdDiv>
-                                    
-                                    </td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv  style={ToggleStyleHandler("11140")} onClick={ToggleDivHandler} id="11140">홍대</MiddleTdDiv></td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv  style={ToggleStyleHandler("11230")} onClick={ToggleDivHandler} id="11230">강남</MiddleTdDiv></td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv  style={ToggleStyleHandler("11050")} onClick={ToggleDivHandler} id="11050">건대</MiddleTdDiv></td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv  id="11130">신촌</MiddleTdDiv></td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv ref={el=>divRef.current[5] = el} id="11010">대학로</MiddleTdDiv></td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv ref={el=>divRef.current[6] = el} id="11090">강북</MiddleTdDiv></td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv ref={el=>divRef.current[7] = el} id="11210">신림</MiddleTdDiv></td>
-                                    <MiddleSpan>|</MiddleSpan>
-                                    <td><MiddleTdDiv ref={el=>divRef.current[8] = el} margin={'10px'}>서울(기타)</MiddleTdDiv></td>
-                                    
-                                </tr>
-                            </tbody>
+                    <tbody>
+                        <tr>
+                            <td><MiddleTdDiv  style={ToggleStyleHandler("11230",'1')} onClick={(e)=>ToggleDivHandler(e,'1')} id="11230">강남</MiddleTdDiv></td>
+                            <MiddleSpan>|</MiddleSpan>
+                            <td><MiddleTdDiv  style={ToggleStyleHandler("11050",'1')} onClick={(e)=>ToggleDivHandler(e,'1')} id="11050">건대</MiddleTdDiv></td>
+                            <MiddleSpan>|</MiddleSpan>
+                            <td><MiddleTdDiv  style={ToggleStyleHandler("11130",'1')} onClick={(e)=>ToggleDivHandler(e,'1')} id="11130">신촌</MiddleTdDiv></td>
+                            <MiddleSpan>|</MiddleSpan>
+                            <td><MiddleTdDiv style={ToggleStyleHandler("11010",'1')} onClick={(e)=>ToggleDivHandler(e,'1')} id="11010">대학로</MiddleTdDiv></td>
+                            <MiddleSpan>|</MiddleSpan>
+                            <td><MiddleTdDiv style={ToggleStyleHandler("11090",'1')} onClick={(e)=>ToggleDivHandler(e,'1')} id="11090">강북</MiddleTdDiv></td>
+                            <MiddleSpan>|</MiddleSpan>
+                            <td><MiddleTdDiv style={ToggleStyleHandler("11210",'1')} onClick={(e)=>ToggleDivHandler(e,'1')} id="11210">신림</MiddleTdDiv></td>
+                            <MiddleSpan>|</MiddleSpan>
+                            <td><MiddleTdDiv style={ToggleStyleHandler("ETC",'1')} onClick={(e)=>ToggleDivHandler(e,'1')} id="ETC" margin={'10px'}>서울(기타)</MiddleTdDiv></td>
+                            
+                        </tr>
+                    </tbody>
                         </MiddleTable>
                     </MiddleDiv>
-                <MiddleDiv>
+                <MiddleDiv className='category'>
                         <div>
                             <SubString>장르</SubString>    
                         </div>
                     <MiddleTable>
                         <tbody>
                             <tr>
-                                <td>
-                                    <MiddleTdDiv>전체</MiddleTdDiv>
-                                </td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA01",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA01">추리</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>추리</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA02",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA02">스릴러</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>스릴러</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA03",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA03">감성</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>감성</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA04",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA04">로맨스</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>로맨스</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA05",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA05">범죄</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>범죄</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA06",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA06">코미디</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>코미디</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA07",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA07">모험</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>모험</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA08",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA08">판타지</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>판타지</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA09",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA09">19금</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>19금</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA10",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA10">공포</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>공포</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA11",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA11">드라마</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>드라마</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA12",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA12">미스터리</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>미스터리</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA13",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA13">아케이드</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>아케이드</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA14",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA14">액션</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>액션</MiddleTdDiv></td>
-                                <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>야외</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA15",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA15">야외</MiddleTdDiv></td>
                             </tr>
                             <tr>
-                                <td><MiddleTdDiv>음악</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA16",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA16">음악</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>잠입</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA17",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA17">잠입</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>역사</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA18",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA18">역사</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>SF</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA19",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA19">SF</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>?</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AA20",'2')} onClick={(e)=>ToggleDivHandler(e,'2')} id="AA20">?</MiddleTdDiv></td>
                             </tr>
                         </tbody>
                     </MiddleTable>
                 </MiddleDiv>
 
-                <MiddleDiv>
+                <MiddleDiv className='cate'>
                     <div>
                         <SubString>유형</SubString>    
                     </div>
@@ -176,29 +245,19 @@ const Middle = () => {
                         <tbody>
                             <tr>
                                 <td>
-                                    <MiddleTdDiv>자물쇠</MiddleTdDiv>
+                                    <MiddleTdDiv style={ToggleStyleHandler("AB01",'3')} onClick={(e)=>ToggleDivHandler(e,'3')} id="AB01">자물쇠</MiddleTdDiv>
                                 </td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>장치</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AB02",'3')} onClick={(e)=>ToggleDivHandler(e,'3')} id="AB02">장치</MiddleTdDiv></td>
                                 
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>비슷한 비율</MiddleTdDiv></td>
-                                <div style={{marginLeft:'120px'}} >
-                                    <SubString>추천인원</SubString>    
-                                </div>
-                                <td><MiddleTdDiv>2명</MiddleTdDiv></td>
-                                <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>3명</MiddleTdDiv></td>
-                                <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>4명</MiddleTdDiv></td>
-                                <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>5명 이상</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("AB03",'3')} onClick={(e)=>ToggleDivHandler(e,'3')} id="AB03" margin={'10px'}>비슷한 비율</MiddleTdDiv></td>
                             </tr>
                         </tbody>
                     </MiddleTable>
                 </MiddleDiv>
 
-                <MiddleDiv>
+                <MiddleDiv className='diff'>
                     <div>
                         <SubString>난이도</SubString>    
                     </div>
@@ -206,25 +265,17 @@ const Middle = () => {
                         <tbody>
                             <tr>
                                 <td>
-                                    <MiddleTdDiv>1</MiddleTdDiv>
+                                    <MiddleTdDiv style={ToggleStyleHandler("1",'4')} onClick={(e)=>ToggleDivHandler(e,'4')} id="1">1</MiddleTdDiv>
                                 </td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>2</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("2",'4')} onClick={(e)=>ToggleDivHandler(e,'4')} id="2">2</MiddleTdDiv></td>
                                 
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>3</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("3",'4')} onClick={(e)=>ToggleDivHandler(e,'4')} id="3">3</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>4</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("4",'4')} onClick={(e)=>ToggleDivHandler(e,'4')} id="4">4</MiddleTdDiv></td>
                                 <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>5</MiddleTdDiv></td>
-                                <div style={{marginLeft:'120px'}} >
-                                    <SubString>활동성</SubString>    
-                                </div>
-                                <td><MiddleTdDiv>적음</MiddleTdDiv></td>
-                                <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>보통</MiddleTdDiv></td>
-                                <MiddleSpan>|</MiddleSpan>
-                                <td><MiddleTdDiv>많음</MiddleTdDiv></td>
+                                <td><MiddleTdDiv style={ToggleStyleHandler("5",'4')} onClick={(e)=>ToggleDivHandler(e,'4')} id="5">5</MiddleTdDiv></td>
                             </tr>
                         </tbody>
                     </MiddleTable>

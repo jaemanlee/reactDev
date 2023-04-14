@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 export const Kakaologin = () => {
     const dispatch = useDispatch(); // dispatch로 재선언하여 사용한다.
     const select = useSelector((state) => state.counter);
-    console.log(select);
     
     const code = new URL(window.location.href).searchParams.get('code');
     const tokenUrl = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${CLIENT_ID}&redirect_url=${REDIRECT_URI}&code=${code}`
