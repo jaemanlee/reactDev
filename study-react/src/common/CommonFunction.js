@@ -20,6 +20,10 @@ export async function kakaoLogout() {
         )
     } catch (error) {
         console.log(`에러: ${error}`);
+        if(error.response.status === 401){
+            localStorage.clear(); 
+            window.location.replace("/");
+        }
     }
     if(token.status === 200) {
         localStorage.clear(); 
